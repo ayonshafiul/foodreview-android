@@ -29,8 +29,11 @@ class SplashActivity : AppCompatActivity() {
         } else {
             viewModel.checkAuthenticated(token)
             viewModel.msgResponse.observe(this) {
-                Log.d("Response", "onCreate: " + it.toString())
-                Toast.makeText(this, "${it.msg}", Toast.LENGTH_SHORT).show()
+                if(it.success) {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+
             }
         }
 

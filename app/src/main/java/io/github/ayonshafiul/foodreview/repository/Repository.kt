@@ -14,4 +14,8 @@ class Repository {
     suspend fun checkAuthenticated(token: String): Response<MsgResponse> {
         return RetrofitInstance.foodAPI.checkAuthenticated(token)
     }
+
+    suspend fun register(user: User): Response<MsgResponse> {
+        return RetrofitInstance.foodAPI.register(user)
+    }
 }

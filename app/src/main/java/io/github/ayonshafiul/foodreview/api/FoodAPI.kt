@@ -17,4 +17,7 @@ interface FoodAPI {
     suspend fun checkAuthenticated(
         @Header("authorization") token: String
     ) : Response<MsgResponse>
+
+    @POST("/api/user/register")
+    suspend fun register(@Body user: User): Response<MsgResponse>
 }
