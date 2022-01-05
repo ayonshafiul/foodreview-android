@@ -3,6 +3,7 @@ package io.github.ayonshafiul.foodreview.utils
 import io.github.ayonshafiul.foodreview.repository.Repository
 import io.github.ayonshafiul.foodreview.viewmodel.AuthViewModel
 import io.github.ayonshafiul.foodreview.viewmodel.AuthViewModelFactory
+import io.github.ayonshafiul.foodreview.viewmodel.HomeViewModelFactory
 import io.github.ayonshafiul.foodreview.viewmodel.SplashViewModelFactory
 
 class Instances {
@@ -17,6 +18,10 @@ class Instances {
 
         val splashFactory: SplashViewModelFactory by lazy {
             SplashViewModelFactory(repository)
+        }
+
+        val homeFactory: HomeViewModelFactory by lazy {
+            HomeViewModelFactory(repository)
         }
     }
 }

@@ -1,8 +1,6 @@
 package io.github.ayonshafiul.foodreview.api
 
-import io.github.ayonshafiul.foodreview.model.MsgResponse
-import io.github.ayonshafiul.foodreview.model.TokenResponse
-import io.github.ayonshafiul.foodreview.model.User
+import io.github.ayonshafiul.foodreview.model.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -20,4 +18,20 @@ interface FoodAPI {
 
     @POST("/api/user/register")
     suspend fun register(@Body user: User): Response<MsgResponse>
+
+    @GET("/api/restaurant/get")
+    suspend fun getRestaurants(@Header("authorization") token: String): Response<RestaurantResponse>
+
+    @GET("/api/restaurant/toprated")
+    suspend fun getTopRatedRestaurants(@Header("authorization") token: String): Response<RestaurantResponse>
+
+    @GET("/api/restaurant/popular")
+    suspend fun getPopularRestaurants(@Header("authorization") token: String): Response<RestaurantResponse>
+
+    @GET("/api/food/toprated")
+    suspend fun getTopRatedFoodItems(@Header("authorization") token: String): Response<FoodResponse>
+
+    @GET("/api/food/popular")
+    suspend fun getPopularFoodItems(@Header("authorization") token: String): Response<FoodResponse>
+
 }
