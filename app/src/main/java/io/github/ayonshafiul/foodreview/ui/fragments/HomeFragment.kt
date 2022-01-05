@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.ayonshafiul.foodreview.R
 import io.github.ayonshafiul.foodreview.adapters.FoodAdapter
@@ -23,6 +24,11 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var token: String
+    private  var topRestaurantAdapter: RestaurantAdapter? = null
+    private  var popularRestaurantAdapter: RestaurantAdapter? = null
+    private  var topFoodItemsAdapter: FoodAdapter? = null
+    private  var popularFoodItemsAdapter: FoodAdapter? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -37,49 +43,47 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var horizontalLayoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
+
         viewModel.getTopRestaurants(token)
-        viewModel.topRestaurants.observe(requireActivity()) {
-            val topRestaurantsAdapter = RestaurantAdapter(it)
-            val horizontalLayoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
-
-            binding.topRestaurantsrv.apply {
-                adapter = topRestaurantsAdapter
-                layoutManager = horizontalLayoutManager
-            }
-        }
-
         viewModel.getPopularRestaurants(token)
-        viewModel.popularRestaurants.observe(requireActivity()) {
-            val popularRestaurantsAdapter = RestaurantAdapter(it)
-            val horizontalLayoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
-
-            binding.popularRestaurantsrv.apply {
-                adapter = popularRestaurantsAdapter
-                layoutManager = horizontalLayoutManager
-            }
-        }
-
         viewModel.getTopFoodItems(token)
-        viewModel.topFoodItems.observe(requireActivity()) {
-            val topFoodItemsAdapter = FoodAdapter(it)
-            val horizontalLayoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        viewModel.getPopularFoodItems(token)
 
-            binding.topFoodItemsrv.apply {
-                adapter = topFoodItemsAdapter
-                layoutManager = horizontalLayoutManager
-            }
+
+        binding.topRestaurantsrv.layoutManager = horizontalLayoutManager
+        viewModel.topRestaurants.observe(requireActivity()) {
+            topRestaurantAdapter = RestaurantAdapter(it)
+            binding.topRestaurantsrv.adapter = topRestaurantAdapter
+            binding.topRestaurantsrv.adapter?.notifyDataSetChanged()
+        }
+
+        horizontalLayoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.popularRestaurantsrv.layoutManager = horizontalLayoutManager
+
+        viewModel.popularRestaurants.observe(requireActivity()) {
+            popularRestaurantAdapter = RestaurantAdapter(it)
+            binding.popularRestaurantsrv.adapter = popularRestaurantAdapter
+            binding.popularRestaurantsrv.adapter?.notifyDataSetChanged()
+        }
+
+        horizontalLayoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.topFoodItemsrv.layoutManager = horizontalLayoutManager
+
+        viewModel.topFoodItems.observe(requireActivity()) {
+            topFoodItemsAdapter = FoodAdapter(it)
+            binding.topFoodItemsrv.adapter = topFoodItemsAdapter
+            binding.topFoodItemsrv.adapter?.notifyDataSetChanged()
         }
 
 
-        viewModel.getPopularFoodItems(token)
-        viewModel.popularFoodItems.observe(requireActivity()) {
-            val topRestaurantsAdapter = FoodAdapter(it)
-            val horizontalLayoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        horizontalLayoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.popularFoodItemsrv.layoutManager = horizontalLayoutManager
 
-            binding.popularFoodItemsrv.apply {
-                adapter = topRestaurantsAdapter
-                layoutManager = horizontalLayoutManager
-            }
+        viewModel.popularFoodItems.observe(requireActivity()) {
+            popularFoodItemsAdapter = FoodAdapter(it)
+            binding.popularFoodItemsrv.adapter = popularFoodItemsAdapter
+            binding.popularFoodItemsrv.adapter?.notifyDataSetChanged()
         }
     }
 

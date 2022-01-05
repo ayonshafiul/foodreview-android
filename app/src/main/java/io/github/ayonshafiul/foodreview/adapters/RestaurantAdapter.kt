@@ -5,10 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import io.github.ayonshafiul.foodreview.R
 import io.github.ayonshafiul.foodreview.model.Restaurant
+import io.github.ayonshafiul.foodreview.ui.fragments.HomeFragmentDirections
 
 class RestaurantAdapter(var list: List<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
@@ -32,6 +34,10 @@ class RestaurantAdapter(var list: List<Restaurant>) : RecyclerView.Adapter<Resta
         restaurantDescription.text = if (current.restaurantDescription.length > 15) current.restaurantDescription.substring(0, 15) + "..." else  current.restaurantDescription
         restaurantRating.text = current.rating.toString() + " / 10"
         Glide.with(holder.itemView).load(R.drawable.restaurant).into(restaurantImage)
+        holder.itemView.setOnClickListener{
+            val action = HomeFragmentDirections.actionHomeFragmentToRestaurantDetailsFragment(current.restaurantID)
+            holder.itemView.findNavController().navigate(action)
+        }
     }
 
     override fun getItemCount(): Int {

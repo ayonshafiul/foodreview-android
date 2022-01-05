@@ -5,10 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import io.github.ayonshafiul.foodreview.R
 import io.github.ayonshafiul.foodreview.model.Food
+import io.github.ayonshafiul.foodreview.ui.fragments.HomeFragmentDirections
 
 class FoodAdapter(var list: List<Food>) : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
 
@@ -32,6 +34,10 @@ class FoodAdapter(var list: List<Food>) : RecyclerView.Adapter<FoodAdapter.FoodV
         foodDescription.text = if (current.foodDescription.length > 15) current.foodDescription.substring(0, 15) + "..." else  current.foodDescription
         foodPrice.text = "Tk. " + current.foodPrice.toString()
         Glide.with(holder.itemView).load(R.drawable.food).into(foodImage)
+        holder.itemView.setOnClickListener{
+            val action = HomeFragmentDirections.actionHomeFragmentToFoodDetailsFragment(current.foodID)
+            holder.itemView.findNavController().navigate(action)
+        }
     }
 
     override fun getItemCount(): Int {
