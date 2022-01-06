@@ -31,6 +31,10 @@ interface FoodAPI {
     @GET("/api/food/toprated")
     suspend fun getTopRatedFoodItems(@Header("authorization") token: String): Response<FoodResponse>
 
+
+    @GET("/api/food/get/restaurant/{restaurantID}")
+    suspend fun getRestaurantFoodItems(@Header("authorization") token: String, @Path("restaurantID") restaurantID: Int): Response<FoodResponse>
+
     @GET("/api/food/popular")
     suspend fun getPopularFoodItems(@Header("authorization") token: String): Response<FoodResponse>
 

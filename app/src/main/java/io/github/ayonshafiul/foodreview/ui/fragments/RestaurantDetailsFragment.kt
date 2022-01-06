@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.ayonshafiul.foodreview.R
+import io.github.ayonshafiul.foodreview.adapters.FoodAdapter
 import io.github.ayonshafiul.foodreview.adapters.ReviewAdapter
 import io.github.ayonshafiul.foodreview.databinding.FragmentFoodDetailsBinding
 import io.github.ayonshafiul.foodreview.databinding.FragmentRestaurantDetailsBinding
@@ -53,8 +54,9 @@ class RestaurantDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getRestaurantDetails(token, args.restaurantID)
         viewModel.getRestaurantReviews(token, args.restaurantID)
+        viewModel.getRestaurantFoodItems(token, args.restaurantID)
 
-        binding.restaurantReviewsrv.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.VERTICAL, false)
+        binding.restaurantReviewsrv.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
 
         binding.restaurantReviewButton.setOnClickListener{
             val reviewText = binding.restaurantTextInputLayout.editText?.text.toString()
@@ -70,11 +72,16 @@ class RestaurantDetailsFragment : Fragment() {
             }
 
         }
-
+        binding.restaurantFoodItemsrv.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         viewModel.reviews.observe(requireActivity()) {
             binding.restaurantReviewsrv.adapter = ReviewAdapter(it)
             binding.restaurantReviewsrv.adapter?.notifyDataSetChanged()
         }
+        viewModel.foodItems.observe(requireActivity()) {
+            binding.restaurantFoodItemsrv.adapter = FoodAdapter(it, "restaurant")
+            binding.restaurantFoodItemsrv.adapter?.notifyDataSetChanged()
+        }
+
     }
     fun refresh() {
         viewModel.getRestaurantDetails(token, args.restaurantID)

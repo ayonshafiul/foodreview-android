@@ -35,6 +35,10 @@ class Repository {
         return RetrofitInstance.foodAPI.getPopularFoodItems(token);
     }
 
+    suspend fun getRestaurantFoodItems(token: String, restaurantID: Int) : Response<FoodResponse> {
+        return RetrofitInstance.foodAPI.getRestaurantFoodItems(token, restaurantID);
+    }
+
     suspend fun getFoodDetails(token: String, foodID: Int) : Response<FoodResponse> {
         return RetrofitInstance.foodAPI.getFoodDetails(token, foodID);
     }
@@ -66,5 +70,7 @@ class Repository {
     suspend fun searchRestaurants(token: String, query: String) : Response<RestaurantResponse> {
         return RetrofitInstance.foodAPI.searchRestaurants(token, query);
     }
+
+
 
 }

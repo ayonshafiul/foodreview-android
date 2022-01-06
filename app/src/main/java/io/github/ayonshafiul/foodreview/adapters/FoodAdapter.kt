@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import io.github.ayonshafiul.foodreview.R
 import io.github.ayonshafiul.foodreview.model.Food
 import io.github.ayonshafiul.foodreview.ui.fragments.HomeFragmentDirections
+import io.github.ayonshafiul.foodreview.ui.fragments.RestaurantDetailsFragmentDirections
 import io.github.ayonshafiul.foodreview.ui.fragments.SearchFragmentDirections
 
 class FoodAdapter(var list: List<Food>, var fragmentName: String = "home") : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
@@ -36,11 +37,16 @@ class FoodAdapter(var list: List<Food>, var fragmentName: String = "home") : Rec
         foodPrice.text = "Tk. " + current.foodPrice.toString()
         Glide.with(holder.itemView).load(R.drawable.food).into(foodImage)
         holder.itemView.setOnClickListener{
-            var action = HomeFragmentDirections.actionHomeFragmentToFoodDetailsFragment(current.foodID)
             if(fragmentName == "search") {
-                action =  SearchFragmentDirections.actionSearchFragmentToFoodDetailsFragment(current.foodID)
+                var action =  SearchFragmentDirections.actionSearchFragmentToFoodDetailsFragment(current.foodID)
+                holder.itemView.findNavController().navigate(action)
+            } else if (fragmentName == "home") {
+                var action = HomeFragmentDirections.actionHomeFragmentToFoodDetailsFragment(current.foodID)
+                holder.itemView.findNavController().navigate(action)
+            } else if (fragmentName == "restaurant") {
+                var action = RestaurantDetailsFragmentDirections.actionRestaurantDetailsFragmentToFoodDetailsFragment(current.foodID)
+                holder.itemView.findNavController().navigate(action)
             }
-            holder.itemView.findNavController().navigate(action)
         }
     }
 

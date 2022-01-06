@@ -6,10 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.ayonshafiul.foodreview.model.MsgResponse
-import io.github.ayonshafiul.foodreview.model.Restaurant
-import io.github.ayonshafiul.foodreview.model.Review
-import io.github.ayonshafiul.foodreview.model.ReviewBody
+import io.github.ayonshafiul.foodreview.model.*
 import io.github.ayonshafiul.foodreview.repository.Repository
 import kotlinx.coroutines.launch
 
@@ -26,6 +23,10 @@ class RestaurantDetailsViewModel(val repository: Repository): ViewModel() {
     val reviews : LiveData<List<Review>>
         get() = _reviews
 
+    val _foodItems = MutableLiveData<List<Food>>()
+    val foodItems : LiveData<List<Food>>
+        get() = _foodItems
+
 
     fun getRestaurantDetails(token: String, restaurantID: Int) {
         viewModelScope.launch {
@@ -33,6 +34,21 @@ class RestaurantDetailsViewModel(val repository: Repository): ViewModel() {
                 val res = repository.getRestaurantDetails(token, restaurantID)
                 if(res.isSuccessful) {
                     _restaurant.postValue(res.body()?.data?.get(0))
+                } else {
+                    Log.d("error", "getrestaurantDetails: " + "error occured")
+                }
+            } catch(excpetion: Exception) {
+                Log.d("restaurantDetails", "getrestaurantDetails: " + excpetion.printStackTrace())
+            }
+        }
+    }
+
+    fun getRestaurantFoodItems(token: String, restaurantID: Int) {
+        viewModelScope.launch {
+            try {
+                val res = repository.getRestaurantFoodItems(token, restaurantID)
+                if(res.isSuccessful) {
+                    _foodItems.postValue(res.body()?.data)
                 } else {
                     Log.d("error", "getrestaurantDetails: " + "error occured")
                 }
