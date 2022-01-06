@@ -1,60 +1,84 @@
 package io.github.ayonshafiul.foodreview.ui.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.ayonshafiul.foodreview.R
+import io.github.ayonshafiul.foodreview.adapters.ReviewAdapter
+import io.github.ayonshafiul.foodreview.databinding.FragmentFoodDetailsBinding
+import io.github.ayonshafiul.foodreview.databinding.FragmentRestaurantDetailsBinding
+import io.github.ayonshafiul.foodreview.model.ReviewBody
+import io.github.ayonshafiul.foodreview.utils.Instances
+import io.github.ayonshafiul.foodreview.viewmodel.FoodDetailsViewModel
+import io.github.ayonshafiul.foodreview.viewmodel.RestaurantDetailsViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RestaurantDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RestaurantDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
+    private lateinit var binding: FragmentRestaurantDetailsBinding
+    val args: RestaurantDetailsFragmentArgs by navArgs()
+    private lateinit var viewModel : RestaurantDetailsViewModel
+    private lateinit var sharedPrefs: SharedPreferences
+    private lateinit var token : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_restaurant_details, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_restaurant_details, container, false)
+        viewModel = ViewModelProvider(requireActivity(), Instances.restauratDetailsFactory).get(
+            RestaurantDetailsViewModel::class.java)
+        sharedPrefs = activity?.getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE)!!
+        token = sharedPrefs.getString(getString(R.string.token_key), "")!!
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = requireActivity()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RestaurantDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RestaurantDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getRestaurantDetails(token, args.restaurantID)
+        viewModel.getRestaurantReviews(token, args.restaurantID)
+
+        binding.restaurantReviewsrv.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.VERTICAL, false)
+
+        binding.restaurantReviewButton.setOnClickListener{
+            val reviewText = binding.restaurantTextInputLayout.editText?.text.toString()
+            val reviewRating = binding.restaurantRatingBar.rating.toDouble() * 2
+            if(reviewText == "") {
+                Toast.makeText(requireContext(), "Please type a review", Toast.LENGTH_SHORT).show()
+            } else {
+                val reviewBody = ReviewBody(reviewRating.toDouble(), reviewText)
+                viewModel.postRestaurantReview(token, reviewBody, args.restaurantID)
+                Toast.makeText(requireContext(), "Inserted Review Successfully", Toast.LENGTH_SHORT).show()
+                refresh()
+                binding.restaurantTextInputLayout.editText?.text?.clear()
             }
+
+        }
+
+        viewModel.reviews.observe(requireActivity()) {
+            binding.restaurantReviewsrv.adapter = ReviewAdapter(it)
+            binding.restaurantReviewsrv.adapter?.notifyDataSetChanged()
+        }
     }
+    fun refresh() {
+        viewModel.getRestaurantDetails(token, args.restaurantID)
+        viewModel.getRestaurantReviews(token, args.restaurantID)
+    }
+
 }

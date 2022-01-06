@@ -29,6 +29,7 @@ class SplashActivity : AppCompatActivity() {
         } else {
             viewModel.checkAuthenticated(token)
             viewModel.msgResponse.observe(this) {
+
                 if(it.success) {
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()

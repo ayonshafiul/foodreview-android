@@ -1,6 +1,6 @@
 package io.github.ayonshafiul.foodreview.model
 
-data class FoodResponse(
-    val data: List<Food>,
+data class ReviewResponse(
+    val data: List<Review>,
     val success: Boolean
 )

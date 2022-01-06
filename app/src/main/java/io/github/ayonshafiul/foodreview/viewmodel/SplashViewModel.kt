@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.ayonshafiul.foodreview.model.MsgResponse
 import io.github.ayonshafiul.foodreview.repository.Repository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashViewModel(val repository: Repository) : ViewModel() {
@@ -13,6 +14,7 @@ class SplashViewModel(val repository: Repository) : ViewModel() {
 
     fun checkAuthenticated(token: String) {
         viewModelScope.launch {
+            delay(2000)
             val res = repository.checkAuthenticated(token)
             if(res.isSuccessful) {
                 msgResponse.postValue(res.body())

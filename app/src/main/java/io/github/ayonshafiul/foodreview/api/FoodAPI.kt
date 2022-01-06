@@ -34,4 +34,30 @@ interface FoodAPI {
     @GET("/api/food/popular")
     suspend fun getPopularFoodItems(@Header("authorization") token: String): Response<FoodResponse>
 
+    @GET("/api/food/get/{foodID}")
+    suspend fun getFoodDetails(@Header("authorization") token: String, @Path("foodID") foodID: Int): Response<FoodResponse>
+
+    @GET("/api/restaurant/get/{restaurantID}")
+    suspend fun getRestaurantDetails(@Header("authorization") token: String, @Path("restaurantID") foodID: Int): Response<RestaurantResponse>
+
+    @GET("/api/restaurant/review/{restaurantID}")
+    suspend fun getRestaurantReviews(@Header("authorization") token: String, @Path("restaurantID") foodID: Int): Response<ReviewResponse>
+
+    @GET("/api/food/review/{foodID}")
+    suspend fun getFoodReviews(@Header("authorization") token: String, @Path("foodID") foodID: Int): Response<ReviewResponse>
+
+
+    @POST("/api/restaurant/review/{restaurantID}")
+    suspend fun postRestaurantReview(
+        @Header("authorization") token: String,
+        @Body reviewBody: ReviewBody,
+        @Path("restaurantID") restaurantID: Int
+    ): Response<MsgResponse>
+
+    @POST("/api/food/review/{foodID}")
+    suspend fun postFoodReview(
+        @Header("authorization") token: String,
+        @Body reviewBody: ReviewBody,
+        @Path("foodID") foodID: Int
+    ): Response<MsgResponse>
 }

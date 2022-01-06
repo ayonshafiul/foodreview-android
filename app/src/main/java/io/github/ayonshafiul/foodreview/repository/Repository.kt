@@ -35,4 +35,28 @@ class Repository {
         return RetrofitInstance.foodAPI.getPopularFoodItems(token);
     }
 
+    suspend fun getFoodDetails(token: String, foodID: Int) : Response<FoodResponse> {
+        return RetrofitInstance.foodAPI.getFoodDetails(token, foodID);
+    }
+
+    suspend fun getRestaurantDetails(token: String, restaurantID: Int) : Response<RestaurantResponse> {
+        return RetrofitInstance.foodAPI.getRestaurantDetails(token, restaurantID);
+    }
+
+    suspend fun getRestaurantReviews(token: String, restaurantID: Int) : Response<ReviewResponse> {
+        return RetrofitInstance.foodAPI.getRestaurantReviews(token, restaurantID);
+    }
+
+    suspend fun getFoodReviews(token: String, foodID: Int) : Response<ReviewResponse> {
+        return RetrofitInstance.foodAPI.getFoodReviews(token, foodID);
+    }
+
+    suspend fun postFoodReview(token : String, reviewBody: ReviewBody, foodID: Int): Response<MsgResponse> {
+        return RetrofitInstance.foodAPI.postFoodReview(token, reviewBody, foodID)
+    }
+
+    suspend fun postRestaurantReview(token : String, reviewBody: ReviewBody, restaurantID: Int): Response<MsgResponse> {
+        return RetrofitInstance.foodAPI.postRestaurantReview(token, reviewBody, restaurantID)
+    }
+
 }
