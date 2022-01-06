@@ -10,7 +10,12 @@
             type="io.github.ayonshafiul.foodreview.viewmodel.FoodDetailsViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/foodSwipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -155,5 +160,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/foodRatingDetails"
                 tools:ignore="SpeakableTextPresentCheck" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

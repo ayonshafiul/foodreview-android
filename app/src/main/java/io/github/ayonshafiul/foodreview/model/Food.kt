@@ -5,7 +5,7 @@ data class Food(
     val foodID: Int,
     val foodName: String,
     val foodPrice: Int,
-    val rating: Int,
+    val rating: Double,
     val ratingCount: Int,
     val ratingSum: Int,
     val restaurantID: Int

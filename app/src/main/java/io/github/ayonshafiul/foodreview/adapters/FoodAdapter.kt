@@ -11,8 +11,9 @@ import com.bumptech.glide.Glide
 import io.github.ayonshafiul.foodreview.R
 import io.github.ayonshafiul.foodreview.model.Food
 import io.github.ayonshafiul.foodreview.ui.fragments.HomeFragmentDirections
+import io.github.ayonshafiul.foodreview.ui.fragments.SearchFragmentDirections
 
-class FoodAdapter(var list: List<Food>) : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
+class FoodAdapter(var list: List<Food>, var fragmentName: String = "home") : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
 
     fun submitList(list: List<Food>) {
         this.list = list
@@ -35,7 +36,10 @@ class FoodAdapter(var list: List<Food>) : RecyclerView.Adapter<FoodAdapter.FoodV
         foodPrice.text = "Tk. " + current.foodPrice.toString()
         Glide.with(holder.itemView).load(R.drawable.food).into(foodImage)
         holder.itemView.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToFoodDetailsFragment(current.foodID)
+            var action = HomeFragmentDirections.actionHomeFragmentToFoodDetailsFragment(current.foodID)
+            if(fragmentName == "search") {
+                action =  SearchFragmentDirections.actionSearchFragmentToFoodDetailsFragment(current.foodID)
+            }
             holder.itemView.findNavController().navigate(action)
         }
     }

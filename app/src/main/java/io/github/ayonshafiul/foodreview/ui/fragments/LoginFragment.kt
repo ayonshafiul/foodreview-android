@@ -36,7 +36,7 @@ class LoginFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), Instances.authFactory).get(AuthViewModel::class.java)
 
         binding.loginButton.setOnClickListener {
-            val user = User("ayonshafiul@gmail.com", "password")
+            val user = User(binding.loginEmail.editText?.text.toString(), binding.loginPassword.editText?.text.toString())
             val token = viewModel.login(user)
             viewModel.tokenResponse.observe(requireActivity()) {
                 val token = it.token
@@ -50,10 +50,10 @@ class LoginFragment : Fragment() {
                     activity?.startActivity(Intent(activity?.applicationContext, MainActivity::class.java))
                     activity?.finish()
                 } else{
-                    Toast.makeText(activity?.applicationContext, "${token}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity?.applicationContext, "${it.token}", Toast.LENGTH_SHORT).show()
                 }
 
-                Log.d("Response", "onViewCreated: ${token}")
+                Log.d("Response", "onViewCreated: ${it.token}")
 
             }
 

@@ -17,9 +17,6 @@ object RetrofitInstance {
                 .create()))
             .build()
     }
-
-
-
     val foodAPI: FoodAPI by lazy {
         retrofit.create(FoodAPI::class.java)
     }

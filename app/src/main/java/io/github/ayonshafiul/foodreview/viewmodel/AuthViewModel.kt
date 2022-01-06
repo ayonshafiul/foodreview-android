@@ -21,24 +21,34 @@ class AuthViewModel(val repository: Repository) : ViewModel() {
     val msgResponse: MutableLiveData<MsgResponse> = MutableLiveData()
     fun login(user: User) {
         viewModelScope.launch {
-            val res = repository.login(user)
-            if(res.isSuccessful) {
-                Log.d("response", "login: " + res.body())
-                tokenResponse.postValue(res.body());
-            } else {
-                tokenResponse.postValue(TokenResponse(false, "error occured"))
+            try {
+                val res = repository.login(user)
+                if(res.isSuccessful) {
+                    Log.d("response", "login: " + res.body())
+                    tokenResponse.postValue(res.body());
+                } else {
+                    tokenResponse.postValue(TokenResponse(false, "error occured"))
+                }
+            } catch (e : Exception) {
+                Log.d("error", "login: " + e.printStackTrace())
             }
+
         }
     }
 
     fun register(user: User) {
         viewModelScope.launch {
-            val res = repository.register(user)
-            if(res.isSuccessful) {
-                msgResponse.postValue(res.body());
-            } else {
-                msgResponse.postValue(MsgResponse(false, "Error occured"))
+            try {
+                val res = repository.register(user)
+                if(res.isSuccessful) {
+                    msgResponse.postValue(res.body());
+                } else {
+                    msgResponse.postValue(MsgResponse(false, "Error occured"))
+                }
+            } catch (e : Exception) {
+                Log.d("error", "register: " + e.printStackTrace())
             }
+
         }
     }
 }

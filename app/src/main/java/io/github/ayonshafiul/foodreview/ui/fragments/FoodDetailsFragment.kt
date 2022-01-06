@@ -49,6 +49,10 @@ class FoodDetailsFragment : Fragment() {
 
         binding.foodReviewsrv.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.VERTICAL, false)
 
+        binding.foodSwipe.setOnRefreshListener {
+            refresh()
+            binding.foodSwipe.isRefreshing = false
+        }
         binding.foodReviewButton.setOnClickListener{
             val reviewText = binding.foodTextInputLayout.editText?.text.toString()
             val reviewRating = binding.foodRatingBar.rating.toDouble() * 2

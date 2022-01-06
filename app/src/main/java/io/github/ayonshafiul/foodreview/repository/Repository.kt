@@ -59,4 +59,12 @@ class Repository {
         return RetrofitInstance.foodAPI.postRestaurantReview(token, reviewBody, restaurantID)
     }
 
+    suspend fun searchFoodItems(token: String, query: String) : Response<FoodResponse> {
+        return RetrofitInstance.foodAPI.searchFoodItems(token, query);
+    }
+
+    suspend fun searchRestaurants(token: String, query: String) : Response<RestaurantResponse> {
+        return RetrofitInstance.foodAPI.searchRestaurants(token, query);
+    }
+
 }

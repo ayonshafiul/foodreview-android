@@ -60,4 +60,11 @@ interface FoodAPI {
         @Body reviewBody: ReviewBody,
         @Path("foodID") foodID: Int
     ): Response<MsgResponse>
+
+    @GET("/api/food/search/")
+    suspend fun searchFoodItems(@Header("authorization") token: String, @Query("q") query: String): Response<FoodResponse>
+
+    @GET("/api/restaurant/search/")
+    suspend fun searchRestaurants(@Header("authorization") token: String, @Query("q") query: String): Response<RestaurantResponse>
+
 }

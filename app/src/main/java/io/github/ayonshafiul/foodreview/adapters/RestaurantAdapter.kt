@@ -11,8 +11,9 @@ import com.bumptech.glide.Glide
 import io.github.ayonshafiul.foodreview.R
 import io.github.ayonshafiul.foodreview.model.Restaurant
 import io.github.ayonshafiul.foodreview.ui.fragments.HomeFragmentDirections
+import io.github.ayonshafiul.foodreview.ui.fragments.SearchFragmentDirections
 
-class RestaurantAdapter(var list: List<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
+class RestaurantAdapter(var list: List<Restaurant>, val fragmentName : String = "home") : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
     fun submitList(list: List<Restaurant>) {
         this.list = list
@@ -35,7 +36,10 @@ class RestaurantAdapter(var list: List<Restaurant>) : RecyclerView.Adapter<Resta
         restaurantRating.text = current.rating.toString() + " / 10"
         Glide.with(holder.itemView).load(R.drawable.restaurant).into(restaurantImage)
         holder.itemView.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToRestaurantDetailsFragment(current.restaurantID)
+            var action = HomeFragmentDirections.actionHomeFragmentToRestaurantDetailsFragment(current.restaurantID)
+            if(fragmentName == "search") {
+                action =  SearchFragmentDirections.actionSearchFragmentToRestaurantDetailsFragment(current.restaurantID)
+            }
             holder.itemView.findNavController().navigate(action)
         }
     }

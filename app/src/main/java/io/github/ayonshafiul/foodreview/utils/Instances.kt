@@ -28,5 +28,9 @@ class Instances {
         val restauratDetailsFactory: RestaurantDetailsViewModelFactory by lazy {
             RestaurantDetailsViewModelFactory(repository)
         }
+
+        val searchFactory: SearchViewModelFactory by lazy {
+            SearchViewModelFactory(repository)
+        }
     }
 }

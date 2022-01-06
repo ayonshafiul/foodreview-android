@@ -23,33 +23,17 @@ class SplashActivity : AppCompatActivity() {
         sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         token = sharedPrefs.getString(getString(R.string.token_key), "")!!
         viewModel = ViewModelProvider(this, Instances.splashFactory).get(SplashViewModel::class.java)
-        if(token == "") {
+        if (token == "") {
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
         } else {
             viewModel.checkAuthenticated(token)
             viewModel.msgResponse.observe(this) {
-
                 if(it.success) {
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
-
             }
         }
-
     }
-
-
 }
-
-//CoroutineScope(Dispatchers.IO).launch {
-//    delay(3000)
-//    notifyMainThread()
-//}
-
-//suspend fun notifyMainThread() {
-//    CoroutineScope(Dispatchers.Main).launch {
-//        finish()
-//    }
-//}

@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
 
         binding.topRestaurantsrv.layoutManager = horizontalLayoutManager
         viewModel.topRestaurants.observe(requireActivity()) {
-            topRestaurantAdapter = RestaurantAdapter(it)
+            topRestaurantAdapter = RestaurantAdapter(it, "home")
             binding.topRestaurantsrv.adapter = topRestaurantAdapter
             binding.topRestaurantsrv.adapter?.notifyDataSetChanged()
         }
@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
         binding.popularRestaurantsrv.layoutManager = horizontalLayoutManager
 
         viewModel.popularRestaurants.observe(requireActivity()) {
-            popularRestaurantAdapter = RestaurantAdapter(it)
+            popularRestaurantAdapter = RestaurantAdapter(it, "home")
             binding.popularRestaurantsrv.adapter = popularRestaurantAdapter
             binding.popularRestaurantsrv.adapter?.notifyDataSetChanged()
         }
@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
         binding.topFoodItemsrv.layoutManager = horizontalLayoutManager
 
         viewModel.topFoodItems.observe(requireActivity()) {
-            topFoodItemsAdapter = FoodAdapter(it)
+            topFoodItemsAdapter = FoodAdapter(it, "home")
             binding.topFoodItemsrv.adapter = topFoodItemsAdapter
             binding.topFoodItemsrv.adapter?.notifyDataSetChanged()
         }
@@ -81,7 +81,7 @@ class HomeFragment : Fragment() {
         binding.popularFoodItemsrv.layoutManager = horizontalLayoutManager
 
         viewModel.popularFoodItems.observe(requireActivity()) {
-            popularFoodItemsAdapter = FoodAdapter(it)
+            popularFoodItemsAdapter = FoodAdapter(it, "home")
             binding.popularFoodItemsrv.adapter = popularFoodItemsAdapter
             binding.popularFoodItemsrv.adapter?.notifyDataSetChanged()
         }

@@ -12,4 +12,5 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="tk_viewmodel_food_foodprice">Tk + @{viewModel.food.foodPrice}</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
